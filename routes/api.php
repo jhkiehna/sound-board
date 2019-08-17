@@ -13,6 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::get('/', function () {
+    return "Hello from slash page";
+});
+
+Route::prefix('auth')->group(function () {
+    Route::post('sign-in', 'SignInController@store');
+    Route::post('register', 'RegisterController@store');
+
+    Route::middleware('auth')->post('sign-out', 'SignInController@destroy');
 });
