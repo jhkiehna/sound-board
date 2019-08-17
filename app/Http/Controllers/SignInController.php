@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Resources\UserResource;
 use App\Http\Requests\SignInRequest;
 use Illuminate\Support\Facades\Hash;
 
@@ -17,10 +18,7 @@ class SignInController extends Controller
             if (Hash::check($request->password, $user->password)) {
                 $user->signIn();
 
-                return response()->json([
-                    'email' => $user->email,
-                    'api_token' => $user->api_token
-                ], 201);
+                return (new UserResource($user))->response()->setStatusCode(201);
             }
         }
 
@@ -33,6 +31,6 @@ class SignInController extends Controller
     {
         $request->user()->signOut();
 
-        return response("User Signed Out", 200);
+        return response()->json(["message" => "User Signed Out"], 200);
     }
 }
