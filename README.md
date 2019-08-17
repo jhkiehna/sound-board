@@ -1,10 +1,6 @@
-# laravel Base Api
+# Sound Board
 
-I created this as a starting point for laravel api projects
-
-It comes with a basic User table migration and Model and some basic Signin, Signout, and registration controllers
-
-It uses a simple token based auth.
+This project is intended to be an api to allow users to create a sound board
 
 ## Init
 
