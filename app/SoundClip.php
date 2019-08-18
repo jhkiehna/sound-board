@@ -3,26 +3,25 @@
 namespace App;
 
 use App\User;
-use App\SoundClip;
+use App\Board;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Board extends Model
+class SoundClip extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
-        'layout'
-    ];    
-    
+        'name'
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function soundClips()
+    public function boards()
     {
-        return $this->belongsToMany(SoundClip::class, 'boards_sound_clips');
+        return $this->belongsToMany(Board::class, 'boards_sound_clips');
     }
 }
