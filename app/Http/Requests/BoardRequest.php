@@ -26,14 +26,16 @@ class BoardRequest extends FormRequest
     private function postRules()
     {
         return [
-            'name' => 'required|string'
+            'name'      => 'required|string',
+            'layout'    => 'json'
         ];
     }
 
     private function patchRules()
     {
         return [
-            'name' => 'string'
+            'name'      => 'string',
+            'layout'    => 'json'
         ];
     }
 
@@ -42,6 +44,8 @@ class BoardRequest extends FormRequest
         return [
             'name.required' => 'Name is required',
             'name.string'   => 'Name must be a string',
+
+            'layout.json'   => 'Layout must be a valid JSON string'
         ];
     }
 }

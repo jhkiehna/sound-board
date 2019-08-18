@@ -17,7 +17,7 @@ class BoardController extends Controller
 
     public function store(BoardRequest $request)
     {
-        $board = Board::make(['name' => $request->name]);
+        $board = Board::make($request->all());
         $request->user()->boards()->save($board);
 
         return new BoardResource($board);

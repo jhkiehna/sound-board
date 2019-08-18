@@ -12,6 +12,7 @@ class Board extends Model
 
     protected $fillable = [
         'name',
+        'layout'
     ];    
     
     public function user()

@@ -17,6 +17,7 @@ class CreateBoardsTable extends Migration
             $table->bigIncrements('id');
             $table->bigInteger('user_id')->unsigned();
             $table->string('name');
+            $table->json('layout')->nullable()->default(null);
             $table->timestamps();
 
             $table->softDeletes();
