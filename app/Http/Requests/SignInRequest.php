@@ -14,7 +14,7 @@ class SignInRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'     => 'required|string',
+            'name'      => 'required|string',
             'password'  => 'required|string',
         ];
     }
@@ -22,8 +22,8 @@ class SignInRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required'        => 'Email is required',
-            'email.string'          => 'Email must be a string',
+            'name.required'        => 'Username is required',
+            'name.string'          => 'Username must be a string',
 
             'password.required'     => 'Password is required',
             'password.string'       => 'Password must be a string',

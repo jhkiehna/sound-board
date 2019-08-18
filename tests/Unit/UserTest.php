@@ -14,11 +14,11 @@ class UserTest extends TestCase
     public function testANewlyCreatedUserHasEmailPasswordAndApiToken()
     {
         $user = factory(User::class)->create([
-          'email' => 'testEmail@test.com',
+          'name' => 'testy',
           'password' => Hash::make('testPassword')
         ]);
 
-        $this->assertEquals($user->email, 'testEmail@test.com');
+        $this->assertEquals($user->name, 'testy');
         $this->assertTrue(Hash::check('testPassword', $user->password));
         $this->assertTrue($user->api_token != null);
     }

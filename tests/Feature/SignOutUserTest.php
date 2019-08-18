@@ -13,10 +13,7 @@ class SignOutUserTest extends TestCase
 
     public function testAUserCanSignOut()
     {
-        $user = User::create([
-            'email' => 'test@test.com',
-            'password' => Hash::make('password')
-        ]);
+        $user = factory(User::class)->create();
 
         $response = $this->withHeaders([
             'Authorization' => "Bearer $user->api_token"
@@ -30,11 +27,6 @@ class SignOutUserTest extends TestCase
 
     public function testAUserCantSignOutWithIncorrectApiToken()
     {
-        $user = User::create([
-            'email' => 'test@test.com',
-            'password' => Hash::make('password')
-        ]);
-
         $response = $this->withHeaders([
             'Authorization' => "Bearer wrongToken"
         ])->json('POST', '/auth/sign-out');
