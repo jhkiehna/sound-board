@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Board;
 use Webpatser\Uuid\Uuid;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -18,6 +19,11 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
     ];
+
+    public function boards()
+    {
+        return $this->hasMany(Board::Class);
+    }
 
     public function signIn()
     {
