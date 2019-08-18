@@ -98,6 +98,6 @@ class BoardTest extends TestCase
         $response = $this->actingAs($user)->json("DELETE", "/boards/{$board->id}");
 
         $response->assertStatus(204);
-        $this->assertEmpty($user->boards()->get());
+        $this->assertEmpty($user->boards);
     }
 }

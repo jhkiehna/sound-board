@@ -12,7 +12,7 @@ class BoardController extends Controller
 {
     public function index(Request $request)
     {
-        return new BoardResourceCollection($request->user()->boards()->get());
+        return new BoardResourceCollection($request->user()->boards);
     }
 
     public function store(BoardRequest $request)

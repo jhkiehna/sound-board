@@ -34,11 +34,11 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('soundclips')->group(function () {
-        Route::get('/', 'SoundCliipController@index');
-        Route::post('/', 'SoundCliipController@store');
-        Route::get('/{soundClip}', 'SoundCliipController@show');
-        Route::patch('/{soundClip}', 'SoundCliipController@update');
-        Route::delete('/{soundClip}', 'SoundCliipController@destroy');
+        Route::get('/', 'SoundClipController@index');
+        Route::post('/', 'SoundClipController@store');
+        Route::get('/{soundClip}', 'SoundClipController@show');
+        Route::patch('/{soundClip}', 'SoundClipController@update');
+        Route::delete('/{soundClip}', 'SoundClipController@destroy');
     });
 });
 
