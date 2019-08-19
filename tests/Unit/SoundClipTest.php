@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Board;
 use App\SoundClip;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SoundClipTest extends TestCase
@@ -23,13 +24,28 @@ class SoundClipTest extends TestCase
 
     public function testABoardCanHaveASoundClip()
     {
-      $board = factory(Board::class)->create();
-      $soundClip = factory(SoundClip::class)->create([
-        'user_id' => $board->user->id
-      ]);
-      $soundClip->boards()->save($board);
+        $board = factory(Board::class)->create();
+        $soundClip = factory(SoundClip::class)->create([
+            'user_id' => $board->user->id
+        ]);
+        $soundClip->boards()->save($board);
 
-      $this->assertEquals($soundClip->boards()->first()->name, $board->name);
-      $this->assertEquals($board->soundClips()->first()->name, $soundClip->name);
+        $this->assertEquals($soundClip->boards()->first()->name, $board->name);
+        $this->assertEquals($board->soundClips()->first()->name, $soundClip->name);
+    }
+
+    public function testASoundClipCanHaveAnAssociatedMediaFile()
+    {
+        Storage::fake('public');
+
+        $filePath = __DIR__.'/../this_is_a_test.mp3';
+        $soundClip = factory(SoundClip::class)->create();
+        $mp3Base64 = base64_encode(file_get_contents($filePath));
+
+        $soundClip->attachMedia($mp3Base64);
+        $soundClip->refresh();
+
+        $this->assertTrue($soundClip->getFirstMedia()->getPath() != null);
+        $this->assertTrue($soundClip->getFirstMedia()->mime_type == 'audio/mpeg');
     }
 }
