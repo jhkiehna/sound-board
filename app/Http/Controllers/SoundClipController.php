@@ -6,6 +6,7 @@ use App\SoundClip;
 use Illuminate\Http\Request;
 use App\Http\Requests\SoundClipRequest;
 use App\Http\Resources\SoundClipResource;
+use App\Http\Requests\SoundClipUploadRequest;
 use App\Http\Resources\SoundClipResourceCollection;
 
 class SoundClipController extends Controller
@@ -40,5 +41,14 @@ class SoundClipController extends Controller
         $soundClip->delete();
 
         return response(null, 204);
+    }
+
+    public function upload(SoundClipUploadRequest $request, SoundClip $soundClip)
+    {
+        $soundClip->attachMedia($request->audioFile);
+
+        return (new SoundClipResource($soundClip->refresh()))
+            ->response()
+            ->setStatusCode(201);
     }
 }

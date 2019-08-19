@@ -39,6 +39,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/{soundClip}', 'SoundClipController@show');
         Route::patch('/{soundClip}', 'SoundClipController@update');
         Route::delete('/{soundClip}', 'SoundClipController@destroy');
+
+        Route::post('/{soundClip}/upload', 'SoundClipController@upload');
     });
 });
 

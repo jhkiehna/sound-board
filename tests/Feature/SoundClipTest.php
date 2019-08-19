@@ -3,9 +3,9 @@
 namespace Tests\Feature;
 
 use App\User;
-use App\Board;
 use App\SoundClip;
 use Tests\TestCase;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class SoundClipTest extends TestCase
@@ -19,7 +19,8 @@ class SoundClipTest extends TestCase
             'user_id' => $soundClip1->user
         ]);
 
-        $response = $this->actingAs($soundClip1->user)->json('GET', '/soundclips');
+        $response = $this->actingAs($soundClip1->user)
+            ->json('GET', '/soundclips');
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -33,7 +34,8 @@ class SoundClipTest extends TestCase
     {
         $soundClip = factory(SoundClip::class)->create();
 
-        $response = $this->actingAs($soundClip->user)->json('GET', "/soundclips/{$soundClip->id}");
+        $response = $this->actingAs($soundClip->user)
+            ->json('GET', "/soundclips/{$soundClip->id}");
 
         $response->assertStatus(200);
         $response->assertJsonFragment([
@@ -46,9 +48,8 @@ class SoundClipTest extends TestCase
     {
         $user = factory(User::class)->create();
 
-        $response = $this->actingAs($user)->json('POST', '/soundclips', [
-          'name' => 'test sound clip',
-        ]);
+        $response = $this->actingAs($user)
+            ->json('POST', '/soundclips', ['name' => 'test sound clip',]);
 
         $response->assertStatus(201);
         $response->assertJsonFragment([
@@ -61,9 +62,8 @@ class SoundClipTest extends TestCase
     {
         $soundClip = factory(SoundClip::class)->create();
 
-        $response = $this->actingAs($soundClip->user)->json('PATCH', "/soundclips/{$soundClip->id}", [
-            'name' => 'new test name'
-        ]);
+        $response = $this->actingAs($soundClip->user)
+            ->json('PATCH', "/soundclips/{$soundClip->id}", ['name' => 'new test name']);
 
         $soundClip->refresh();
 
@@ -79,9 +79,29 @@ class SoundClipTest extends TestCase
         $soundClip = factory(SoundClip::class)->create();
         $user = $soundClip->user;
 
-        $response = $this->actingAs($user)->json("DELETE", "/soundclips/{$soundClip->id}");
+        $response = $this->actingAs($user)
+            ->json("DELETE", "/soundclips/{$soundClip->id}");
 
         $response->assertStatus(204);
         $this->assertEmpty($user->soundClips);
+    }
+
+    public function testAUserCanUploadASoundFile()
+    {
+        Storage::fake('public');
+        $filePath = __DIR__.'/../this_is_a_test.mp3';
+        $mp3Base64 = base64_encode(file_get_contents($filePath));
+        $soundClip = factory(SoundClip::class)->create();
+
+        $response = $this->actingAs($soundClip->user)
+            ->json("POST", "/soundclips/{$soundClip->id}/upload", [
+                'audioFile' => $mp3Base64
+            ]);
+        $soundClip->refresh();
+
+        $response->assertStatus(201);
+        $response->assertJsonFragment([
+            'url' => $soundClip->getFirstMedia()->getFullUrl()
+        ]);
     }
 }
