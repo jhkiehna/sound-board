@@ -24,10 +24,24 @@ Route::prefix('auth')->group(function () {
     Route::middleware('auth')->post('sign-out', 'SignInController@destroy');
 });
 
-Route::prefix('boards')->middleware('auth')->group(function () {
-    Route::get('/', 'BoardController@index');
-    Route::post('/', 'BoardController@store');
-    Route::get('/{board}', 'BoardController@show');
-    Route::patch('/{board}', 'BoardController@update');
-    Route::delete('/{board}', 'BoardController@destroy');
+Route::middleware('auth')->group(function () {
+    Route::prefix('boards')->group(function () {
+        Route::get('/', 'BoardController@index');
+        Route::post('/', 'BoardController@store');
+        Route::get('/{board}', 'BoardController@show');
+        Route::patch('/{board}', 'BoardController@update');
+        Route::delete('/{board}', 'BoardController@destroy');
+    });
+
+    Route::prefix('soundclips')->group(function () {
+        Route::get('/', 'SoundClipController@index');
+        Route::post('/', 'SoundClipController@store');
+        Route::get('/{soundClip}', 'SoundClipController@show');
+        Route::patch('/{soundClip}', 'SoundClipController@update');
+        Route::delete('/{soundClip}', 'SoundClipController@destroy');
+
+        Route::post('/{soundClip}/upload', 'SoundClipController@upload');
+    });
 });
+
+

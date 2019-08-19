@@ -18,14 +18,14 @@ class SignInUserTest extends TestCase
         $user->save();
 
         $response = $this->json('POST', '/auth/sign-in', [
-          'email' => $user->email,
+          'name' => $user->name,
           'password' => 'password'
         ]);
         $user->refresh();
 
         $response->assertStatus(201);
         $response->assertJsonFragment([
-            'email' => $user->email,
+            'name' => $user->name,
             'api_token' => $user->api_token
         ]);
     }
@@ -35,7 +35,7 @@ class SignInUserTest extends TestCase
         $user = factory(User::class)->create();
 
         $response = $this->json('POST', '/auth/sign-in', [
-          'email' => $user->email,
+          'name' => $user->name,
           'password' => 'wrong_password'
         ]);
 

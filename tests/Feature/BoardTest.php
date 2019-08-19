@@ -73,6 +73,23 @@ class BoardTest extends TestCase
         $this->assertEquals($board->name, 'new test name');
     }
 
+    public function testAUserCanUpdateABoardsLayout()
+    {
+        $board = factory(Board::class)->create();
+        $layout = json_encode(['version' => 1, 'field1' => 'test', 'field2' => 'test2']);
+
+        $response = $this->actingAs($board->user)->json('PATCH', "/boards/{$board->id}", [
+            'layout' => $layout
+        ]);
+
+        $board->refresh();
+
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['name' => $board->name]);
+        $response->assertJsonFragment(['layout' => $board->layout]);
+        $this->assertEquals(json_decode($board->layout)->version, 1);
+    }
+
     public function testAUserCanDeleteABoard()
     {
         $board = factory(Board::class)->create();
@@ -81,6 +98,6 @@ class BoardTest extends TestCase
         $response = $this->actingAs($user)->json("DELETE", "/boards/{$board->id}");
 
         $response->assertStatus(204);
-        $this->assertEmpty($user->boards()->get());
+        $this->assertEmpty($user->boards);
     }
 }

@@ -12,12 +12,12 @@ class BoardController extends Controller
 {
     public function index(Request $request)
     {
-        return new BoardResourceCollection($request->user()->boards()->get());
+        return new BoardResourceCollection($request->user()->boards);
     }
 
     public function store(BoardRequest $request)
     {
-        $board = Board::make(['name' => $request->name]);
+        $board = Board::make($request->all());
         $request->user()->boards()->save($board);
 
         return new BoardResource($board);

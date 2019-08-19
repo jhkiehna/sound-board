@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BoardRequest extends FormRequest
+class SoundClipRequest extends FormRequest
 {
     public function authorize()
     {
@@ -27,7 +27,6 @@ class BoardRequest extends FormRequest
     {
         return [
             'name'      => 'required|string',
-            'layout'    => 'json'
         ];
     }
 
@@ -35,7 +34,6 @@ class BoardRequest extends FormRequest
     {
         return [
             'name'      => 'string',
-            'layout'    => 'json'
         ];
     }
 
@@ -44,8 +42,6 @@ class BoardRequest extends FormRequest
         return [
             'name.required' => 'Name is required',
             'name.string'   => 'Name must be a string',
-
-            'layout.json'   => 'Layout must be a valid JSON string'
         ];
     }
 }
