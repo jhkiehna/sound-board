@@ -48,9 +48,7 @@ class SoundClip extends Model implements HasMedia
         $this->addMediaCollection('audio')
             ->singleFile()
             ->acceptsFile(function (File $file) {
-                $acceptableMimeTypes = collect($this->acceptableMimeTypes);
-
-                return $acceptableMimeTypes->contains($file->mimeType);
+                return collect($this->acceptableMimeTypes)->contains($file->mimeType);
             });
     }
 }
