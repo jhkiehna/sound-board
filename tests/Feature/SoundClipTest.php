@@ -101,7 +101,22 @@ class SoundClipTest extends TestCase
 
         $response->assertStatus(201);
         $response->assertJsonFragment([
-            'url' => $soundClip->getFirstMedia()->getFullUrl()
+            'url' => $soundClip->getFirstMediaUrl('audio')
         ]);
+    }
+
+    public function testAUserCantUploadFilesOfWrongType()
+    {
+        Storage::fake('public');
+        $filePath = __DIR__.'/../test-image.png';
+        $pngBase64 = base64_encode(file_get_contents($filePath));
+        $soundClip = factory(SoundClip::class)->create();
+
+        $response = $this->actingAs($soundClip->user)
+            ->json("POST", "/soundclips/{$soundClip->id}/upload", [
+                'audioFile' => $pngBase64
+            ]);
+
+        $response->assertStatus(422);
     }
 }

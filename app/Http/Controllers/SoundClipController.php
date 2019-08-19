@@ -8,6 +8,7 @@ use App\Http\Requests\SoundClipRequest;
 use App\Http\Resources\SoundClipResource;
 use App\Http\Requests\SoundClipUploadRequest;
 use App\Http\Resources\SoundClipResourceCollection;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileUnacceptableForCollection;
 
 class SoundClipController extends Controller
 {
@@ -45,7 +46,13 @@ class SoundClipController extends Controller
 
     public function upload(SoundClipUploadRequest $request, SoundClip $soundClip)
     {
-        $soundClip->attachMedia($request->audioFile);
+        try {
+            $soundClip->attachMedia($request->audioFile);
+        } catch (FileUnacceptableForCollection $e) {
+            return response()->json([
+                'message' => 'Invalid file type'
+            ], 422);
+        }
 
         return (new SoundClipResource($soundClip->refresh()))
             ->response()

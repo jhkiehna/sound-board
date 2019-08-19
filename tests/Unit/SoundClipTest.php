@@ -7,6 +7,7 @@ use App\SoundClip;
 use Tests\TestCase;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileUnacceptableForCollection;
 
 class SoundClipTest extends TestCase
 {
@@ -45,7 +46,20 @@ class SoundClipTest extends TestCase
         $soundClip->attachMedia($mp3Base64);
         $soundClip->refresh();
 
-        $this->assertTrue($soundClip->getFirstMedia()->getPath() != null);
-        $this->assertTrue($soundClip->getFirstMedia()->mime_type == 'audio/mpeg');
+        $this->assertTrue($soundClip->getFirstMediaUrl('audio') != null);
+        $this->assertTrue($soundClip->getFirstMedia('audio')->mime_type == 'audio/mpeg');
+    }
+
+    public function testASoundClipCantHaveWrongFileTypeAssociated()
+    {
+        $this->expectException(FileUnacceptableForCollection::class);
+
+        Storage::fake('public');
+
+        $filePath = __DIR__.'/../test-image.png';
+        $soundClip = factory(SoundClip::class)->create();
+        $mp3Base64 = base64_encode(file_get_contents($filePath));
+
+        $soundClip->attachMedia($mp3Base64);
     }
 }

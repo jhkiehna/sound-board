@@ -40,7 +40,7 @@ class SoundClip extends Model implements HasMedia
 
     public function attachMedia($base64)
     {
-        $this->addMediaFromBase64($base64)->toMediaCollection();
+        $this->addMediaFromBase64($base64)->toMediaCollection('audio');
     }
 
     public function registerMediaCollections()
