@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', function () {
-    return "Hello from slash page";
+    return "<h1>Hello from slash page</h1><p>This is an api, there are no open web routes</p>";
 });
 
 Route::prefix('auth')->group(function () {

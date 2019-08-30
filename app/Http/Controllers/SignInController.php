@@ -23,7 +23,7 @@ class SignInController extends Controller
         }
 
         return response()->json([
-            'message' => 'Invalid email or password'
+            'message' => 'Invalid username or password'
         ], 401);
     }
 
