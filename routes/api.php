@@ -43,5 +43,3 @@ Route::middleware('auth')->group(function () {
         Route::post('/{soundClip}/upload', 'SoundClipController@upload');
     });
 });
-
-
