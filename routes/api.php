@@ -13,9 +13,9 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return "<h1>Hello from slash page</h1><p>This is an api, there are no open web routes</p>";
-});
+Route::any('forbidden', function () {
+    return response()->json(['message' => 'Forbidden: Unauthenticated'], 403);
+})->name('forbidden');
 
 Route::prefix('auth')->group(function () {
     Route::post('sign-in', 'SignInController@store');
