@@ -1,6 +1,6 @@
 # Sound Board
 
-This project is intended to be an api to allow users to create a sound board
+This is play project. It is intended to be an API to allow users to create a sound board. The frontend React app is a WIP.
 
 ## Init
 
