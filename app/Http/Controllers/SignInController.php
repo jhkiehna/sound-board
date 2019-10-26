@@ -12,7 +12,7 @@ class SignInController extends Controller
 {
     public function store(SignInRequest $request)
     {
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('name', $request->name)->first();
 
         if ($user) {
             if (Hash::check($request->password, $user->password)) {
@@ -23,7 +23,7 @@ class SignInController extends Controller
         }
 
         return response()->json([
-            'message' => 'Invalid email or password'
+            'message' => 'Invalid username or password'
         ], 401);
     }
 

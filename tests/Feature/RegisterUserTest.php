@@ -13,44 +13,52 @@ class RegisterUserTest extends TestCase
     public function testAUserCanCreateAnAccount()
     {
         $response = $this->json('POST', '/auth/register', [
-          'email' => 'newUser@test.com',
+          'name' => 'testy',
           'password' => 'password',
           'password_confirmation' => 'password',
         ]);
 
-        $user = User::where('email', 'newUser@test.com')->first();
+        $user = User::where('name', 'testy')->first();
 
         $response->assertStatus(201);
-        $response->assertJsonFragment([
-            'email' => 'newUser@test.com'
-        ]);
+        $response->assertJsonFragment(['name' => 'testy']);
         $this->assertTrue($user->api_token != null);
     }
 
     public function testAUserCantRegisterWithBadData()
     {
       factory(User::class)->create([
-        'email' => 'userExists@test.com',
+        'name' => 'testy',
+        'email' => 'testy@test.com',
         'password' => 'testPassword'
       ]);
       $badPasswordResponse = $this->json('POST', '/auth/register', [
+        'name' => 'new user',
         'email' => 'newUser@test.com',
         'password' => 'password',
         'password_confirmation' => 'password_doesnt_match',
       ]);
+      $nameExistsResponse = $this->json('POST', '/auth/register', [
+        'name' => 'testy',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+      ]);
       $badEmailResponse = $this->json('POST', '/auth/register', [
+        'name' => 'new user 3',
         'email' => 'newUser',
         'password' => 'password',
         'password_confirmation' => 'password',
       ]);
       $emailExistsResponse = $this->json('POST', '/auth/register', [
-        'email' => 'userExists@test.com',
+        'name' => 'new user 4',
+        'email' => 'testy@test.com',
         'password' => 'password',
         'password_confirmation' => 'password',
       ]);
 
 
       $badPasswordResponse->assertStatus(422);
+      $nameExistsResponse->assertStatus(422);
       $badEmailResponse->assertStatus(422);
       $emailExistsResponse->assertStatus(422);
     }

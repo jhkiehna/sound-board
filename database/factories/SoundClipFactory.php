@@ -2,8 +2,8 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 use App\User;
+use App\SoundClip;
 use Faker\Generator as Faker;
-use Illuminate\Support\Facades\Hash;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,10 +16,9 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
-$factory->define(User::class, function (Faker $faker) {
+$factory->define(SoundClip::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->name(),
-        'email' => $faker->unique()->safeEmail,
-        'password' => Hash::make($faker->uuid),
+        'name' => $faker->words(2, true),
+        'user_id' => factory(User::class)->create()
     ];
 });

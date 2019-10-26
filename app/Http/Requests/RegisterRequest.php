@@ -14,7 +14,8 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'email'     => 'required|string|email|unique:users,email',
+            'name'      => 'required|string|unique:users',
+            'email'     => 'string|email|unique:users,email',
             'password'  => 'required|string|confirmed',
         ];
     }
@@ -22,10 +23,13 @@ class RegisterRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required'        => 'Email is required',
+            'name.required'         => 'A username is required',
+            'name.string'           => 'Username must be a string',
+            'name.unique'           => 'Account already exists',
+
             'email.string'          => 'Email must be a string',
             'email.email'           => 'Email must be valid',
-            'email.unique'          => 'Account already exists',
+            'email.unique'          => 'An account with this email already exists',
 
             'password.required'     => 'Password is required',
             'password.string'       => 'Password must be a string',
